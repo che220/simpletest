@@ -1,0 +1,17 @@
+1. set up .bashrc
+
+2. set up etc/hadoop's config files
+
+3. format Namenode:
+   	 bin/hdfs namenode -format
+
+4. Start all Hadoop daemons
+   	 Start hdfs daemons:       sbin/start-dfs.sh
+	 Start MapReduce daemons:  sbin/start-yarn.sh
+
+	 Stop MapReduce daemons:  sbin/stop-yarn.sh
+   	 Stop hdfs daemons:       sbin/stop-dfs.sh
+
+5. Track/Monitor/Verify
+	jps
+

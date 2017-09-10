@@ -1,0 +1,5 @@
+1. cassandra.yaml
+   Cluster Name
+   lister_address and rpc_address to 192.168.0.3
+
+2. start in foreground: bin/cassandra -f

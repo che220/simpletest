@@ -1,0 +1,18 @@
+1. Must have hadoop:
+   	export HADOOP_HOME=<hadoop-install-dir>
+
+2. create /tmp and /user/hive/warehouse (aka hive.metastore.warehouse.dir) and set them chmod g+w in HDFS before you can create a table in Hive:
+   	  $ $HADOOP_HOME/bin/hadoop fs -mkdir       /tmp
+  	  $ $HADOOP_HOME/bin/hadoop fs -mkdir -p    /user/hive/warehouse
+  	  $ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /tmp
+  	  $ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /user/hive
+  	  $ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /user/hive/warehouse
+
+3. Running Hive CLI
+   	   $ $HIVE_HOME/bin/hive
+
+4. Running HiveServer2 and Beeline. HiveServer2 (introduced in Hive 0.11) has its own CLI called Beeline.  HiveCLI is now deprecated in favor of Beeline, as it lacks the multi-user, security, and other capabilities of HiveServer2.  To run HiveServer2 and Beeline from shell:
+
+   	   $ $HIVE_HOME/bin/hiveserver2
+
+	   $ $HIVE_HOME/bin/beeline -u jdbc:hive2://$HS2_HOST:$HS2_PORT

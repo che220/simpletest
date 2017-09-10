@@ -1,0 +1,5 @@
+1. in conf/spark-env.sh:
+   SPARK_MASTER_IP=192.168.0.3
+
+2. bin/start-master.sh
+
