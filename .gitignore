@@ -5,3 +5,7 @@ metastore_db
 spark-warehouse
 *.log
 *.pyc
+.*~
+*~
+#*
+.#*
