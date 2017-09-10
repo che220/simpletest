@@ -1,2 +1,4 @@
 # simpletest
-nothing important
+
+all the learning and testing projects
+
