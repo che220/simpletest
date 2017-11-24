@@ -1,21 +1,8 @@
-
-# coding: utf-8
-
-# In[1]:
-
-get_ipython().magic('config IPCompleter.greedy=True')
-get_ipython().magic('matplotlib inline')
-
-
-# In[2]:
-
 import pandas as pd, numpy as np, os, sys
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 from IPython.display import display, HTML
-from IPython.core.debugger import Tracer
-from IPython.core.debugger import Pdb
 
 font = {'size'   : 18}
 matplotlib.rc('font', **font)
@@ -180,8 +167,9 @@ def lessThanStats(x, y, binSize, minx=None, maxx=None, minCnt=20):
 
 # In[3]:
 
-get_ipython().run_cell_magic('time', '', "cacheDir = '/Users/huiwang/dev/PTG_DataScience/spark_cache'\ninFile = '{}/desktop_profile_complete_TY2015.csv'.format(cacheDir)\nallData = pd.read_csv(inFile)")
-
+cacheDir = '/Users/huiwang/dev/PTG_DataScience/spark_cache'
+inFile = '{}/test_profile_TY2015.csv'.format(cacheDir)
+allData = pd.read_csv(inFile)
 
 # In[4]:
 
@@ -302,8 +290,6 @@ def inBinProbs(x, y, binSize, positiveClass=True, minx=None, maxx=None, minCnt=2
     minx, maxx = [minx, maxx]
     bins = np.arange(minx, maxx*1.0001, binSize)
     rsDF = pd.DataFrame(bins, columns=[x.name])
-    rsDF['bucket'] = rsDF[x.name].map(lambda x: '>= {:.3f}'.format(x))
-    
     rsDF['freq'] = [binDF.loc[binDF.x >= thresh, 'y'].shape[0] for thresh in bins]
     rsDF['freq_pct'] = rsDF.freq/x.shape[0]
     
@@ -313,7 +299,6 @@ def inBinProbs(x, y, binSize, positiveClass=True, minx=None, maxx=None, minCnt=2
             return 0.0
         
         aaPos = binDF[binDF.y == positiveClass]
-        Pdb.set_trace()
         return float(aaPos.shape[0])/float(aa.shape[0])
 
     bins = bins.tolist()
