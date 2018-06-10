@@ -11,4 +11,6 @@ spark-warehouse
 *~
 #*
 .#*
-
+.classpath
+.settings
+target
