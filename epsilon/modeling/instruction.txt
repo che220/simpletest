@@ -1,0 +1,15 @@
+There are two files in the attached zip file.
+
+1.       Train.csv contains the data related to the response of 0 or 1.
+2.       Test.csv has the same structure except that it does not have the response column.
+
+Your goal is to build the best model that can predict the response of 1 by using train.csv. Then apply your model to test.csv with an additional column showing the probability of a response of 1 per row. You can use any tool you are familiar with.
+
+When you are done, please email me the followings:
+
+1.       All your code in building the model and generating the probabilities per row in test.csv.
+2.       Test.csv with the probability of response=1 appended to each row.
+3.       A short write up on your approach and why you think it is a decent model.
+
+50: 0.45
+100:
