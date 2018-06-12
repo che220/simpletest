@@ -53,56 +53,62 @@ def cvEval(features, labels):
             logger.info('n_estimators = %d, max_depth = %d, mean kappa = %f', num, depth, np.mean(scores))
 
 def build_model(features, labels):
-    clf = RandomForestClassifier(n_estimators=250, max_depth=15)
+    clf = RandomForestClassifier(n_estimators=400, max_depth=20)
     clf.fit(features, labels)
     return clf
 
 def predict(clf, tests):
     pass
 
-data_dir = os.path.dirname(__file__) + "/interview"
-label_col = 'response'
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        logger.error('Usage: %s <running mode: evaluate or production>', sys.argv[0])
+        exit(1)
 
-trains = pd.read_csv(data_dir + '/train.csv')
-trains = trains.reset_index(drop=True)
-logger.info('training data: %s', trains.shape)
-logger.info('training labels: \n%s', trains[label_col].value_counts(dropna=False))
-logger.info('training samples: \n%s', trains.head(4))
+    mode = sys.argv[1].lower()
+    logger.info("Running mode: %s", mode)
 
-scaler = StandardScaler()
-labels = trains[label_col]
-features = trains.drop(label_col, axis=1)
-scaler.fit(features)
-features = pd.DataFrame(scaler.transform(features), columns=features.columns)
-#mode = 'Evaluation'
-mode = 'Production'
+    data_dir = os.path.dirname(__file__) + "/interview"
+    label_col = 'response'
 
-if mode == 'Evaluation':
-    cvEval(features, labels)
-else:
-    clf = build_model(features, labels)
-    classes = clf.classes_
-    positive_class_idx = np.where(classes == 1)[0][0]
-    logger.info('classes: %s', classes)
-    logger.info('positive class index: %s', positive_class_idx)
+    trains = pd.read_csv(data_dir + '/train.csv')
+    trains = trains.reset_index(drop=True)
+    logger.info('training data: %s', trains.shape)
+    logger.info('training labels: \n%s', trains[label_col].value_counts(dropna=False))
+    logger.info('training samples: \n%s', trains.head(4))
 
-    tests = pd.read_csv(data_dir + '/test.csv')
-    tests = tests.reset_index(drop=True)
-    logger.info('testing data: %s', tests.shape)
-    logger.info('testing samples: \n%s', tests.head(4))
+    scaler = StandardScaler()
+    labels = trains[label_col]
+    features = trains.drop(label_col, axis=1)
+    scaler.fit(features)
+    features = pd.DataFrame(scaler.transform(features), columns=features.columns)
 
-    # missing featurs?
-    cols = [x for x in features.columns if x not in tests.columns]
-    logger.info("missing features: %s", cols)
-    for col in cols:
-        tests[col] = 0 # for any missing features, set to zero (assume zero is the default value)
+    if mode == 'evaluation':
+        cvEval(features, labels)
+    else:
+        clf = build_model(features, labels)
+        classes = clf.classes_
+        positive_class_idx = np.where(classes == 1)[0][0]
+        logger.info('classes: %s', classes)
+        logger.info('positive class index: %s', positive_class_idx)
 
-    tests = tests[features.columns] # align test data with train data
-    probs = clf.predict_proba(scaler.transform(tests))[:, positive_class_idx]
-    logger.info(probs[0:10])
-    tests['predict_response'] = probs
-    logger.info('tests with prediction probabilities: \n%s', tests.head(4))
+        tests = pd.read_csv(data_dir + '/test.csv')
+        tests = tests.reset_index(drop=True)
+        logger.info('testing data: %s', tests.shape)
+        logger.info('testing samples: \n%s', tests.head(4))
 
-    out_file = data_dir + '/test_with_prediction_probs.csv'
-    tests.to_csv(out_file)
-    logger.info('output to %s', out_file)
+        # missing featurs?
+        cols = [x for x in features.columns if x not in tests.columns]
+        logger.info("missing features: %s", cols)
+        for col in cols:
+            tests[col] = 0 # for any missing features, set to zero (assume zero is the default value)
+
+        tests = tests[features.columns] # align test data with train data
+        probs = clf.predict_proba(scaler.transform(tests))[:, positive_class_idx]
+        logger.info(probs[0:10])
+        tests['predict_response'] = probs
+        logger.info('tests with prediction probabilities: \n%s', tests.head(4))
+
+        out_file = data_dir + '/test_with_prediction_probs.csv'
+        tests.to_csv(out_file)
+        logger.info('output to %s', out_file)
