@@ -4,21 +4,32 @@ FROM python:3.6.6-slim-jessie
 # Install any needed packages specified in requirements.txt
 WORKDIR /root
 ADD .bashrc /root/
-
-RUN apt-get update && apt-get install -y less mutt alien git emacs vim openssh-server openssh-client
-RUN apt-get install -y build-essential unixodbc-dev
-
 ADD Dockerfile /root/
+
+# Note: odbc requires odbc.ini and odbcinst.ini. For vertica, need vertica.ini
+# For kerberos, need keytab files
+RUN apt-get update && apt-get install -y less mutt alien git emacs vim openssh-server openssh-client
+RUN apt-get install -y build-essential unixodbc-dev krb5-user
+
+# install packages for ML
 RUN pip install --trusted-host pypi.python.org Cython
 RUN pip install --trusted-host pypi.python.org scipy
 RUN pip install --trusted-host pypi.python.org pandas jupyter scikit-learn tensorflow pyodbc
+
+# install spacy
+RUN pip install --trusted-host pypi.python.org spacy
+RUN python -m spacy download en
+RUN python -m spacy download en_core_web_sm
+RUN python -m spacy download en_core_web_md
+RUN python -m spacy download en_core_web_lg
+RUN python -m spacy download en_vectors_web_lg
 
 RUN git config --global user.name root
 RUN git config --global user.email root@docker_myacct
 RUN git config --global push.default simple
 
-# Make port 8888 available to the world outside this container
-# EXPOSE 8888
+# expose jupyter notebook's port
+EXPOSE 8888
 
 # Define environment variable
 ENV USER root
