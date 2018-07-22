@@ -9,12 +9,16 @@ ADD Dockerfile /root/
 # Note: odbc requires odbc.ini and odbcinst.ini. For vertica, need vertica.ini
 # For kerberos, need keytab files
 RUN apt-get update && apt-get install -y less mutt alien git emacs vim openssh-server openssh-client
-RUN apt-get install -y build-essential unixodbc-dev krb5-user
+RUN apt-get install -y build-essential unixodbc-dev
 
 # install packages for ML
+RUN pip install -U pip
 RUN pip install --trusted-host pypi.python.org Cython
 RUN pip install --trusted-host pypi.python.org scipy
 RUN pip install --trusted-host pypi.python.org pandas jupyter scikit-learn tensorflow pyodbc
+
+# AWS
+RUN pip install --trusted-host pypi.python.org boto3 awscli
 
 # install spacy
 RUN pip install --trusted-host pypi.python.org spacy
