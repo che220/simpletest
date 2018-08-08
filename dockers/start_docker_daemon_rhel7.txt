@@ -1,3 +1,5 @@
 start docker daemon manually: sudo systemctl start docker
 status check:                 sudo systemctl status docker
 make sure docker runs at reboot: sudo systemctl enable docker
+
+For other users to use it:    sudo usermod -a -G docker <user> (add user to docker group)
