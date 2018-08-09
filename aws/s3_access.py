@@ -14,7 +14,7 @@ def list_buckets(profile='default'):
     for bucket in list_buckets_resp['Buckets']:
         logger.info('S3 bucket: %s', bucket['Name'])
 
-def upload_file(infile, bucket='pcg-ds-s3', profile='default'):
+def upload_file(infile, bucket='bucket1', profile='default'):
     sess = boto3.session.Session(profile_name=profile)
     s3client = sess.client('s3')
     filename = os.path.basename(infile)
