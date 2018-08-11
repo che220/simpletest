@@ -1,20 +1,3 @@
-.DS_Store
-.ipynb*
-.idea
-.project
-.pydevproject
-__pycache__
-metastore_db
-spark-warehouse
-*.log
-*.pyc
-.*~
-*~
-#*
-.#*
-.classpath
-.settings
-target
 # odbc.ini and keytab files have passwords
 odbc.ini
 *.keytab

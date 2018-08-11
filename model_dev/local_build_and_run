@@ -1,0 +1,89 @@
+#!/bin/bash
+
+function usage()
+{
+    echo "usage: $0 [-h] [-r] <train|predict|inference> [userid] [family] [prev_moduleid]"
+    echo '    -h: show this help'
+    echo '    -r: docker run or invoke inference'
+    echo '    train: build training docker or run training (-r)'
+    echo '    predict: build predict docker or run predicting server (-r) at 127.0.0.1:8080'
+    echo '    inference: must use -r. Post data to predicting server for inference'
+    echo '    userid, family, and prev_moduleid: only applicable to inference'
+    exit 1
+}
+
+function stop_all_containers()
+{
+    echo "Docker containers:"
+    docker container ls -a
+
+    ids=$(docker container ls -a |grep -v CONTAINER |awk '{print $1}')
+    for id in $ids; do
+	docker container rm $id
+	echo "removed container $id"
+    done
+
+    echo "Remaining docker containers:"
+    docker container ls -a
+}
+
+if [ $# -lt 1 ]; then
+    usage
+fi
+
+build=1
+while getopts ":hr" opt; do
+    case $opt in
+        r) build=0; echo "option: no log file";;
+        h) usage;;
+    esac
+done
+shift $((OPTIND -1))
+mode=$1
+
+scriptDir=$(dirname $0)
+. $scriptDir/job_env.sh
+
+if [ $build -eq 1 ]; then
+    if [ $mode == 'train' -o $mode == 'predict' ]; then
+	$PYTHON_BIN setup.py $mode --idfile=id.txt
+	if [ $? -ne 0 ]; then
+	    exit 1
+	fi
+	docker tag $(< id.txt) ${project_name}_${mode}:latest
+	rm -f id.txt
+	stop_all_containers
+
+	echo "All docker images:"
+	docker image ls
+    else
+	echo "$mode is invalid for building dockers"
+	exit 1
+    fi
+else
+    image_name=${project_name}_${mode}
+    if [ $mode == 'train' ]; then
+	echo "run training with image $image_name ..."
+	docker run -v ${DATA_CACHE_DIR}:/data/input/training -v ${MODEL_OUTPUT_DIR}/opt/ml:/opt/ml ${image_name}:latest
+	stop_all_containers
+
+	s3Dir=s3://my-s3/${project_name}/training/model/
+	aws s3 cp $MODEL_OUTPUT_DIR/opt/ml/model.tar.gz $s3Dir
+    elif [ $mode == 'predict' ]; then
+	echo "run predicting server with image $image_name ..."
+	docker run -v ${MODEL_OUTPUT_DIR}/opt/ml:/opt/ml -p 127.0.0.1:8080:8080/tcp ${image_name}:latest
+	stop_all_containers
+    elif [ $mode == 'inference' ]; then
+	userid="\"userid\" : \"$2\""
+	family=$(echo $3 |tr 'a-z' 'A-Z')
+	family="\"family\" : \"$family\""
+	prev_moduleid="\"prev_moduleid\" : \"$4\""
+
+	echo "run curl with POST and data = $userid, $family, $prev_moduleid ..."
+	curl -X POST http://127.0.0.1:8080/invocations -H 'content-type: application/json' \
+	    -d "{$userid, $family, $prev_moduleid}"
+	echo
+    else
+	echo "$mode is invalid for training and inference"
+    fi
+fi
