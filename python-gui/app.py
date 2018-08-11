@@ -21,7 +21,7 @@ class SageMakerParamDialog:
         row = 0
         Label(canvas, text='MXS Env:').grid(row=row, column=0, sticky=N+S+E+W, padx=10, pady=10)
         self.env_combo = Combobox(canvas, state='readonly', value=['cdev', 'e2e', 'cperf', 'prod'])
-        self.env_combo.set('e2e')
+        self.env_combo.current(1)
         self.env_combo.grid(row=row, column=1)
 
         row += 1
@@ -60,13 +60,13 @@ class Window(Frame):
         row = 0
         Button(canvas, text='Build Docker', command=self._build_docker).grid(row=row, column=0, sticky=N+S+E+W, padx=10, pady=10)
         self.docker_combo = Combobox(canvas, state='readonly', value=['for training', 'for predicting'])
-        self.docker_combo.set('for training')
+        self.docker_combo.current(0)
         self.docker_combo.grid(row=row, column=1)
 
         row += 1
         Button(canvas, text='Run Trainng', command=self._run_training).grid(row=row, column=0, sticky=N+S+E+W, padx=10, pady=10)
         self.train_combo = Combobox(canvas, state='readonly', value=['locally', 'with docker'])
-        self.train_combo.set('locally')
+        self.train_combo.current(0)
         self.train_combo.grid(row=row, column=1)
 
         row += 1
@@ -76,7 +76,7 @@ class Window(Frame):
         row += 1
         Button(canvas, text='Run Predictions', command=self._run_predict).grid(row=row, column=0, sticky=N+S+E+W, padx=10, pady=10)
         self.predict_combo = Combobox(canvas, state='readonly', value=['in batch', 'on docker server', 'on AWS SageMaker'])
-        self.predict_combo.set('in batch')
+        self.predict_combo.current(0)
         self.predict_combo.grid(row=row, column=1)
 
         Button(self, text='Exit', command=self._client_exit).pack(fill=X, padx=10, pady=10)
