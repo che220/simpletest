@@ -10,6 +10,7 @@ class SageMakerParamDialog:
     def __init__(self, parent):
         self.top = Toplevel(parent)
         self.mxs_env = self.mxs_version = None
+        self.cancelled = False
 
         canvas = Canvas(self.top, highlightthickness=0)
         canvas.pack(fill=X, expand=1, padx=10)
@@ -35,6 +36,7 @@ class SageMakerParamDialog:
         root.wait_window(self.top)
 
     def _cancel(self):
+        self.cancelled = True
         self.top.destroy()
 
     def _ok(self):
@@ -98,6 +100,9 @@ class Window(Frame):
             self._list_and_remove_containers()
         elif 'SageMaker' in val:
             dialog = SageMakerParamDialog(self)
+            if dialog.cancelled:
+                return
+
             env = dialog.mxs_env
             version = dialog.mxs_version
             print('run tests against sagemake with mxs env = {} and mxs verion = {}'.format(env, version))
