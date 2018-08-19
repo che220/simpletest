@@ -1,0 +1,34 @@
+https://www.learnopencv.com/deep-learning-based-text-recognition-ocr-using-tesseract-and-opencv/
+
+1.1. Install Tesseract 4.0 on Ubuntu 18.04
+Tesseract 4 is included with Ubuntu 18.04, so we will install it directly using Ubuntu package manager.
+
+sudo apt install tesseract-ocr
+sudo apt install libtesseract-dev
+sudo pip install pytesseract
+
+1.2. Install Tesseract 4.0 on Ubuntu 14.04, 16.04, 17.04, 17.10
+Due to certain dependencies, only Tesseract 3 is available from official release channels for Ubuntu versions older than 18.04.
+Luckily Ubuntu PPA – alex-p/tesseract-ocr maintains Tesseract 4 for Ubuntu versions 14.04, 16.04, 17.04, 17.10. We add this PPA to our Ubuntu machine and install Tesseract. If you have an Ubuntu version other than these, you will have to compile Tesseract from source.
+
+sudo add-apt-repository ppa:alex-p/tesseract-ocr
+sudo apt-get update
+sudo apt install tesseract-ocr
+sudo apt install libtesseract-dev
+sudo pip install pytesseract
+
+1.3. Install Tesseract 4.0 on macOS
+We will use Homebrew to install Tesseract on Homebrew. By default, Homebrew installs Tesseract 3, but we can nudge it to install the latest version from the Tesseract git repo using the following command.
+
+# If you have tesseract 3 installed, unlink first by uncommenting the line below 
+# brew unlink tesseract 
+brew install tesseract --HEAD
+pip install pytesseract
+
+tesseract --version
+
+# Output to terminal
+tesseract image.jpg stdout -l eng --oem 1 --psm 3
+# Output to output.txt 
+tesseract image.jpg output -l eng --oem 1 --psm 3
+
