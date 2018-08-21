@@ -1,6 +1,9 @@
-import cv2, numpy as np
+import cv2, numpy as np, os, sys
 
-img = cv2.imread('/Users/hwang7/tmp/simpletest/OCR/irs1099misc.png', cv2.IMREAD_UNCHANGED)
+pwd = os.path.realpath(__file__)
+pwd = os.path.dirname(pwd)
+
+img = cv2.imread(pwd+'/../irs1099misc.png', cv2.IMREAD_UNCHANGED)
 print(img.shape) # 0 - vertical, 1 - horizontal, 2 - BGR colors
 
 win_name = 'image_orig'
