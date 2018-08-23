@@ -3,6 +3,8 @@ import cv2, numpy as np
 img = cv2.imread('/Users/hwang7/tmp/simpletest/OCR/irs1099misc.png', cv2.IMREAD_UNCHANGED)
 print(img.shape) # 0 - vertical, 1 - horizontal, 2 - BGR colors
 
+a = cv2.adaptiveThreshold()
+
 win_name = 'image_orig'
 cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
 cv2.imshow(win_name, img)
