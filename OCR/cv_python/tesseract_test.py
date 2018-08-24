@@ -7,9 +7,13 @@ pd.set_option('display.width', 5000)
 pd.set_option('max_columns', 600)
 np.set_printoptions(threshold=np.nan) # print out all values, regardless length
 
-show_imgs = False
+show_imgs = True
 
-img = cv2.imread('/Users/hwang7/tmp/simpletest/OCR/irs1099misc.png', cv2.IMREAD_UNCHANGED)
+img = cv2.imread('/Users/hwang7/tmp/simpletest/OCR/images/irs1099misc.png', cv2.IMREAD_UNCHANGED)
+
+# tesseract cannot deal with slanted images
+#img = cv2.imread('/Users/hwang7/tmp/simpletest/OCR/images/1099MISC-slanted.png', cv2.IMREAD_UNCHANGED)
+
 print(img.shape) # 0 - vertical, 1 - horizontal, 2 - BGR colors
 if show_imgs:
     display_cv2_image(img, 'Original')
@@ -36,6 +40,9 @@ for col in cols:
 rs = []
 for line in lines[1:]:
     flds = np.array(re.split('\t', line))
+    if len(flds) <= text_idx:
+        print('>>> DISCARD:', line)
+        continue
     flds[text_idx] = flds[text_idx].strip()
     if len(flds[text_idx]) == 0:
         continue
