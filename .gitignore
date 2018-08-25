@@ -8,7 +8,6 @@ Release
 .pydevproject
 __pycache__
 metastore_db
-spark-warehouse
 *.log
 *.pyc
 .*~
@@ -18,26 +17,16 @@ spark-warehouse
 .classpath
 .settings
 target
-# odbc.ini and keytab files have passwords
-odbc.ini
-*.keytab
 
 #----------------------
 *.egg-info
 dist
-id.txt
 *.stackdump
 nohup.out
-.ipynb*
-__pycache__
-.idea
-*.pdf
 *.rda
 cache
-spark_cache
 log
 logs
-*.log
 1*.*
 2*.*
 3*.*
@@ -50,17 +39,8 @@ logs
 .Rhistory
 Thumbs.db
 [0-9]*
-target
-.settings
-.classpath
-.project
 build
 .metadata
-model_output
-.log
-*~
-.*~
 *.class
 .pydev*
-*.pyc
 metastore_db
