@@ -8,16 +8,16 @@ import tensorflow as tf
 import locality_aware_nms as nms_locality
 import lanms
 
-tf.app.flags.DEFINE_string('test_data_path', '/tmp/ch4_test_images/images/', '')
-tf.app.flags.DEFINE_string('gpu_list', '0', '')
-tf.app.flags.DEFINE_string('checkpoint_path', '/tmp/east_icdar2015_resnet_v1_50_rbox/', '')
-tf.app.flags.DEFINE_string('output_dir', '/tmp/ch4_test_images/images/', '')
-tf.app.flags.DEFINE_bool('no_write_images', False, 'do not write images')
+tf.flags.DEFINE_string('test_data_path', '/tmp/ch4_test_images/images/', '')
+tf.flags.DEFINE_string('gpu_list', '0', '')
+tf.flags.DEFINE_string('checkpoint_path', '/tmp/east_icdar2015_resnet_v1_50_rbox/', '')
+tf.flags.DEFINE_string('output_dir', '/tmp/ch4_test_images/images/', '')
+tf.flags.DEFINE_bool('no_write_images', False, 'do not write images')
 
 import model
 from icdar import restore_rectangle
 
-FLAGS = tf.app.flags.FLAGS
+FLAGS = tf.flags.FLAGS
 
 def get_images():
     '''
