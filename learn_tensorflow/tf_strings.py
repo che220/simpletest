@@ -43,3 +43,7 @@ with tf.Session() as sess:
 
     print('---------string to number-------', '\n')
     print(sess.run(tf.string_to_number(tf_num_mat, out_type=tf.int64)), '\n')
+
+from sklearn import preprocessing
+a = np.array([1,2,3])
+b = preprocessing.normalize(a, norm='l1')
