@@ -37,6 +37,9 @@ def login():
         return 'GET done. But I do not like it!'
 
 if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001)
+    exit(0)
+
     with app.test_request_context():
         print(url_for('index'))
         print(url_for('hello'))
