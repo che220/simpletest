@@ -1,3 +1,5 @@
+pedestrians128x64
+pedestrians_neg
 *.dSYM
 .cproject
 Debug
