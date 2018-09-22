@@ -1,4 +1,4 @@
-import os, sys, numpy as np, pandas as pd, re
+import os, sys, numpy as np, pandas as pd, re, datetime as dt, subprocess
 from utils import display_cv2_image
 
 import cv2, pytesseract, io
@@ -9,7 +9,8 @@ np.set_printoptions(threshold=np.nan) # print out all values, regardless length
 
 show_imgs = True
 
-img = cv2.imread('/Users/hwang7/tmp/simpletest/OCR/images/irs1099misc.png', cv2.IMREAD_UNCHANGED)
+img_file = os.environ['HOME'] + '/simpletest/OCR/images/checkboxes.png'
+img = cv2.imread(img_file, cv2.IMREAD_UNCHANGED)
 
 # tesseract cannot deal with slanted images
 #img = cv2.imread('/Users/hwang7/tmp/simpletest/OCR/images/1099MISC-slanted.png', cv2.IMREAD_UNCHANGED)
@@ -27,6 +28,7 @@ if show_imgs:
 #print(text)
 
 text_loc = pytesseract.image_to_data(dst_img, lang='eng', config='--psm 3', nice=0, output_type=pytesseract.Output.STRING)
+print(text_loc)
 lines = re.split('\n', text_loc)
 headers = re.split('\t', lines[0])
 print(headers)
