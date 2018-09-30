@@ -1,31 +1,25 @@
 # Use an official Python runtime as a parent image
-FROM python:3.6.6-slim-jessie
+FROM ubuntu:18.04
+RUN ln -fs /usr/share/zoneinfo/America/Chicago /etc/localtime
 
 # Install any needed packages specified in requirements.txt
-WORKDIR /root
-ADD .bashrc /root/
-ADD Dockerfile /root/
-
-WORKDIR /root/bin
-ADD train /root/bin/
-
-RUN apt-get update && apt-get install -y less alien vim build-essential
+RUN apt-get update
+RUN apt-get install -y python3.6 python3-pip less alien vim build-essential git emacs
 
 # install packages for ML
-RUN pip install --trusted-host pypi.python.org Cython
-RUN pip install --trusted-host pypi.python.org scipy
-RUN pip install --trusted-host pypi.python.org scikit-learn
+RUN pip3 install --trusted-host pypi.python.org Cython spicy scikit-learn jupyter pandas opencv-python
 
 # AWS
-RUN pip install --trusted-host pypi.python.org boto3 awscli
+RUN pip3 install --trusted-host pypi.python.org boto3 awscli
 
-# expose jupyter notebook's port
-EXPOSE 8888
+# caffe
+RUN apt-get install -y caffe-cpu
 
 # Define environment variable
 ENV USER=root
 ENV HOME=/root
 ENV PATH="/root/bin:${PATH}"
+WORKDIR /
 
 #ENTRYPOINT ["/root/bin/train"]
 

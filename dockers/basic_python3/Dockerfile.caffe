@@ -1,0 +1,19 @@
+# Use an official Python runtime as a parent image
+FROM bvlc/caffe:cpu
+#RUN ln -fs /usr/share/zoneinfo/America/Chicago /etc/localtime
+
+# Install any needed packages specified in requirements.txt
+RUN apt-get update
+#RUN apt-get install -y python3.6 python3-pip less alien vim build-essential git emacs
+
+# install packages for ML
+#RUN pip3 install --trusted-host pypi.python.org Cython spicy scikit-learn jupyter pandas opencv-python
+
+# Define environment variable
+ENV USER=root
+ENV HOME=/root
+ENV PATH="/root/bin:${PATH}"
+WORKDIR /
+
+#ENTRYPOINT ["/root/bin/train"]
+

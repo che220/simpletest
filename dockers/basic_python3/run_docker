@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+    echo "usage: $0 <build|run> [image name] [dockerfile]"
+    exit 1
+fi
+
+mode=$1
+name=basic_python3
+dockerfile=Dockerfile
+if [ $# -ge 2 ]; then
+    name=$2
+fi
+if [ $# -ge 3 ]; then
+    dockerfile=$3
+fi
+
+if [ $mode == 'build' ]; then
+    docker build -t $name - < $dockerfile
+else
+   docker run --name $name -it ${name}:latest /bin/bash
+fi
