@@ -1,3 +1,0 @@
-python3 -n virtualenv env
-or
-virtualenv env
