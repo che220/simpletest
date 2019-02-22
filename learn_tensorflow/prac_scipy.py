@@ -67,6 +67,11 @@ def popular_value_list_sort(weights):
     items.sort(key=lambda kv: kv[1], reverse=True)
     return items[0][0]
 
+def sort_on_value(weights):
+    items = [(kv[0], kv[1] + 0.001 * len(kv[0])) for kv in weights.items()]
+    items.sort(key=lambda kv: kv[1], reverse=True)
+    return items
+
 key_weights = {}
 key_weights['value_1'] = 1
 key_weights['value_2'] = 1
@@ -91,14 +96,14 @@ t0 = microsec_since_epoch()
 for i in range(n):
     x = popular_value_map(key_weights)
 t1 = microsec_since_epoch()
-print('map:', t1 - t0)
+print('map-lambda:', t1 - t0)
 tt1 = t1 - t0
 
 t0 = microsec_since_epoch()
 for i in range(n):
     x = popular_value_map_func(key_weights)
 t1 = microsec_since_epoch()
-print('map_func:', t1 - t0)
+print('map-func:', t1 - t0)
 tt2 = t1 - t0
 
 t0 = microsec_since_epoch()
@@ -108,10 +113,12 @@ t1 = microsec_since_epoch()
 print('list-sort:', t1 - t0)
 tt3 = t1 - t0
 
-print('list-sort/list:', tt3/tt0)
-print('list/map:', tt0/tt1)
-print('list/map_func', tt0/tt2)
-print('map/map_func', tt1/tt2)
+print('=========================')
+ts = {'list-sort' : tt3, 'list' : tt0, 'map-lambda' : tt1, 'map-func' : tt2}
+ts = sort_on_value(ts)
+max_t = ts[0][1]
+for k in ts:
+    print('{name}:\t{time}\t{pct:.2f}%'.format(name=k[0], time=k[1], pct=k[1]/max_t*100.0))
 
 #
 table1 = {'a' : 1, 'b' : 2, 'c' : 3, 'd' : 4, 'e' : 5}
@@ -124,7 +131,7 @@ print(ks)
 rs = []
 for k in ks:
     rs.append((k, table1[k], table2[k]))
-rs = sorted(rs, key=lambda kvv: kvv[0], reverse=False)
+rs.sort(key=lambda kvv: kvv[0], reverse=False)
 print('Col1, Col2, Col3')
 for r in rs:
     print(r)
