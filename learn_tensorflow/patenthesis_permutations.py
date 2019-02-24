@@ -34,7 +34,8 @@ def func(n):
             score -= 1
         rs[key] = (score, lefts, 0)
 
-    rs = sorted(list(rs.keys()))
+    rs = list(rs.keys())
+    rs.sort()
     return rs
 
 print(func(4))
