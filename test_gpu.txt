@@ -1,0 +1,29 @@
+import tensorflow as tf
+from tensorflow.python.client import device_lib
+def gpus():
+  local_device_protos = device_lib.list_local_devices()
+  return [x.name for x in local_device_protos if x.device_type == 'GPU']
+
+Start an ubuntu:
+docker run -ti ubuntu:latest /bin/bash
+
+Multiple to same ubuntu container:
+docker exec -ti <container id> /bin/bash
+
+ctrl+p then ctrl+q to leave container without exiting
+
+Install:
+emacs vim net-tools g++ openssh-server git
+libboost-all-dev libgoole-glog-dev libblas-dev liblapack-dev libhdf5-dev libprotobuf-dev protobuf-compiler
+lua-torch-torch7-dev libtorch-luat-dev
+
+python3.6
+sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev liblmdb-dev libsnappy-dev
+install leveldb manually ***
+
+python3 - virtualenv, jupyter lab, jupyter notebook
+	- create venv: opencv2, pandas, numpy, scikit-learn, scipy, tensorflow 1.12 (cpu)
+
+https://linuxize.com/post/how-to-install-opencv-on-ubuntu-18-04/
+
+
