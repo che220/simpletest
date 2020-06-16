@@ -13,24 +13,23 @@ class Solution:
 
         if len(s) > 2:
             arr = np.array(list(s))
-            for half_len in range(arr.shape[0] // 2 + 1, 1, -1):
+            max_half = (arr.shape[0] + 1) // 2
+            for half_len in range(max_half, 1, -1):
                 long_palin = None
                 for i in range(0, arr.shape[0] - half_len):
-                    # for half_len = 2, it can have total 3 or 4 chars, e.g., 'bab', 'baab'
-
                     # for even length
                     exp_len = half_len * 2
                     if i + exp_len - 1 < len(s):
-                        sub_s = arr[i:i+exp_len]
-                        r_sub_s = sub_s[::-1]
+                        sub_s = arr[i:i+half_len]
+                        r_sub_s = arr[i+half_len:i+exp_len][::-1]
                         if not np.any(r_sub_s != sub_s):
                             return s[i:i + exp_len]
 
                     # for odd length
                     exp_len = half_len * 2 - 1
                     if i + exp_len - 1 < len(s):
-                        sub_s = arr[i:i+exp_len]
-                        r_sub_s = sub_s[::-1]
+                        sub_s = arr[i:i+half_len-1]
+                        r_sub_s = arr[i+half_len:i+exp_len][::-1]
                         if not np.any(r_sub_s != sub_s):
                             long_palin = s[i:i + exp_len]
 
