@@ -1,5 +1,0 @@
-python dependency modules:
-  mdlp_discretization - feature selection
-  easygui - getpassword
-  tensorflow - neural network
-  
